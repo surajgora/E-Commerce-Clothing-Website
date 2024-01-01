@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function sendOTP()
+            {
+                var email=document.getElementById("emid1").value;
+                alert("Hi"+email);
+                var obj=new XMLHttpRequest();
+                if(obj)
+                {
+                    try{
+                        obj.open("get","sendEmail.jsp?a="+email,true);
+                        obj.send(null);
+                        obj.onreadystatechange=function ()
+                        {
+                            if(obj.readyState==4 && obj.status==200)
+                            {
+                                document.getElementById("hotp1").value=obj.responseText;
+                            }
+                        };
+                    }catch(e){
+                        alert(e);
+                    }
+                }
+            }
+            function matchOTP()
+            {
+                var otp=document.getElementById("otp1").value;
+                var otp1=document.getElementById("hotp1").value;
+                var ot=otp.trim();
+                var ot1=otp1.trim();
+                if(ot!=ot1)
+                {
+                    document.getElementById("otp1").value="";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form action="Reg_Server.jsp" method="POST">
+        <table border="1" align="center" cellspacing="10px" cellpadding="10px">
+            <tr><th colspan="2">Registration</th></tr>
+            <tr><td>User Name :</td><td><input type="text" name="user" id="user1" required></td></tr>
+            <tr><td>Password :</td><td><input type="password" name="pass" id="pass1" required></td></tr>
+            <tr><td>Re-enter Password :</td><td><input type="password" name="repass" id="repass1" required></td></tr>
+            <tr><td>Enter Name :</td><td><input type="text" name="name" id="name1" required></td></tr>
+            <tr><td>Mobile No :</td><td><input type="number" name="mob" id="mob1" required></td></tr>
+            <tr><td>Email Id :</td><td><input type="email" name="emid" id="emid1" required></td></tr>
+            <tr><td>Click to Generate OTP :</td><td><input type="Button" value="GENERATE OTP" onclick="sendOTP()" style="width: 163px; height: 40px; background-color: yellow"></td></tr>
+            <tr><td>Enter OTP :</td><td><input type="text" name="otp" id="otp1" required></td></tr>
+            <tr><td></td><td><input type="hidden" name="hotp" id="hotp1"></td></tr>
+            <tr><td></td><td><input type="submit" value="SUBMIT" onclick="matchOTP()" style="width: 163px; height: 40px; background-color: yellow"></td></tr>
+        </table>
+        </form>
+    </body>
+</html>
